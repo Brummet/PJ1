@@ -93,13 +93,13 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 	public int getNumerator()
 	{
 		// implement this method!
-		return 0;
+		return num;
 	}	// end getNumerator
 
 	public int getDenominator()
 	{
 		// implement this method!
-		return 0;
+		return den;
 	}	// end getDenominator
 
 	public char getSign()
@@ -117,8 +117,12 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 	public FractionInterface add(FractionInterface secondFraction)
 	{
 		// a/b + c/d is (ad + cb)/(bd)
+                FractionInterface result = new Fraction();
+                Fraction a = (Fraction) result;
+                result =  new Fraction((this.num * secondFraction.getDenominator() + 
+                        secondFraction.getNumerator()*this.den), (this.den*secondFraction.getDenominator()));
 		// implement this method!
-		return null;
+		return result;
 	}	// end add
 
 	public FractionInterface subtract(FractionInterface secondFraction)
