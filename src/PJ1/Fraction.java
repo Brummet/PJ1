@@ -74,7 +74,7 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 		// return ArithmeticException if initialDenominator is 0
 		if(denominator == 0){
                     //throw exception
-                    System.out.println("Exception to be thrown");
+                    throw new ArithmeticException("Denominator can't be zero");
                 }
                 if(denominator < 0){
                 denominator = abs(denominator);
@@ -85,6 +85,7 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
                 numerator = abs(numerator);
                 denominator = abs(denominator);
                 }
+                
                 
                 num = numerator;
                 den = denominator;
@@ -105,7 +106,16 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 	public char getSign()
 	{
 		// implement this method!
-		return '\0';
+                int x = this.num;
+                int y = this.den;
+                char result = '\0';
+                char neg = '-';
+                char pos = '+';
+                if((x < 0) || y < 0)
+                    result = neg;
+                else
+                    result = pos;
+		return result;
 	}	// end getSign
 
 	public void switchSign()
@@ -170,7 +180,7 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
                 Fraction a = (Fraction) result;
                 result = new Fraction(this.den, this.num);
                 if (this.den == 0){
-                    //throw exception
+                    throw new ArithmeticException("Denominator can't be zero");
                 }
 		return result;
 	} // end getReciprocal
@@ -179,14 +189,47 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 	public boolean equals(Object other)
 	{
 		// implement this method!
-		return false;
+            boolean result = false;
+            this.reduceToLowestTerms();
+            // reduces Object other to lowest terms
+            ((Fraction)other).reduceToLowestTerms(); 
+            // to get values of num and den of object other in int form
+            int fNum = ((Fraction)other).num;
+            int fDen = ((Fraction)other).den;
+            
+            if((this.num == fNum) && (this.den == fDen))
+            {
+                result = true;
+            }
+            else if(this != other)
+            {
+                result = false;
+            }
+		return result;
 	} // end equals
 
 
 	public int compareTo(Fraction other)
 	{
 		// implement this method!
-		return 0;
+            int result = 2;
+            this.reduceToLowestTerms();
+            // reduces Object other to lowest terms
+            ((Fraction)other).reduceToLowestTerms(); 
+            
+            // used to compare objects
+           int left = this.num * ((Fraction)other).den;
+           int right = this.den * ((Fraction)other).num;
+            
+            if(this.equals(other))
+                result = 0;
+            // meaning this < other
+            else if(left < right)
+                result = -1;
+            // meaning this > other
+            else 
+                result = 1;
+		return result;
 	} // end compareTo
 
 	
@@ -225,7 +268,6 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 			result = integerTwo;
 		 else
 			result = greatestCommonDivisor(integerTwo, integerOne % integerTwo);
-                 //System.out.println("GCD Method:" + result);
 
 		 return result;
 	}	// end greatestCommonDivisor
@@ -279,6 +321,8 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
                 System.out.println("\nReciprocal Test: " + secondOperand.getReciprocal());
                 
 		System.out.println();
+                
+                // fist = -21/2  second = 7/8 
 
 		// equality check
 		if (firstOperand.equals(firstOperand))
@@ -292,6 +336,7 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 		else
 			System.out.println("ERROR in equality of fractions");
 
+                
 		// comparison check
 		Fraction first  = (Fraction)firstOperand;
 		Fraction second = (Fraction)secondOperand;
@@ -313,6 +358,8 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 			System.out.println("ERROR in fractions > operator");
 
 		System.out.println();
+                
+                System.out.println("before exception");
 
 		try {
 			Fraction a1 = new Fraction(1, 0);		    
