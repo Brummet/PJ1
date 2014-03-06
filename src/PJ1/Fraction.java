@@ -118,40 +118,61 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 	{
 		// a/b + c/d is (ad + cb)/(bd)
                 FractionInterface result = new Fraction();
-                Fraction a = (Fraction) result;
-                result =  new Fraction((this.num * secondFraction.getDenominator() + 
+                Fraction a = (Fraction) result;  // sets fraction A to casted fraction interface result;
+                a =  new Fraction((this.num * secondFraction.getDenominator() + 
                         secondFraction.getNumerator()*this.den), (this.den*secondFraction.getDenominator()));
 		// implement this method!
-		return result;
+                a.reduceToLowestTerms();
+                
+		return a;
 	}	// end add
 
 	public FractionInterface subtract(FractionInterface secondFraction)
 	{
 		// a/b - c/d is (ad - cb)/(bd)
 		// implement this method!
-		return null;
+                FractionInterface result = new Fraction();
+                Fraction a = (Fraction) result;
+                a =  new Fraction ((this.num * secondFraction.getDenominator()
+                        - secondFraction.getNumerator() * this.den), (this.den * secondFraction.getDenominator()));
+		a.reduceToLowestTerms();
+               
+                return a;
 	}	// end subtract
 
 	public FractionInterface multiply(FractionInterface secondFraction)
 	{
 		// a/b * c/d is (ac)/(bd)
-		// implement this method!
-		return null;
+		FractionInterface result = new Fraction();
+                Fraction a = (Fraction) result;
+                a =  new Fraction (this.num * secondFraction.getNumerator(),
+                        (this.den * secondFraction.getDenominator())); 
+		a.reduceToLowestTerms();
+                return a;
 	}	// end multiply
 
 	public FractionInterface divide(FractionInterface secondFraction)
 	{
 		// return ArithmeticException if secondFraction is 0
 		// a/b / c/d is (ad)/(bc)
-		// implement this method!
-		return null;
+		FractionInterface result = new Fraction();
+                Fraction a = (Fraction) result;
+                a =  new Fraction ((this.num * secondFraction.getDenominator()),
+                        (this.den * secondFraction.getNumerator()));
+                a.reduceToLowestTerms();
+                return a;
 	}	// end divide
 
 	public FractionInterface getReciprocal() 
 	{
 		// return ArithmeticException if secondFraction is 0
-		// implement this method!
-		return null;
+		FractionInterface result = new Fraction();
+                Fraction a = (Fraction) result;
+                result = new Fraction(this.den, this.num);
+                if (this.den == 0){
+                    //throw exception
+                }
+		return result;
 	} // end getReciprocal
 
 
@@ -183,13 +204,13 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 
 	private void reduceToLowestTerms()
 	{
-                // implement this method!
-                //
-                // Outline:
-                // compute GCD of num & den
-                //   greatestCommonDivisor works for + numbers.
-                //   So, you should eliminate - sign
-                // then reduce numbers : num/GCD and den/GCD
+                
+                int common = greatestCommonDivisor(abs(num), abs(den));
+                //System.out.println("In Reduce method common: " + common);
+               
+                num = num/common;
+                den = den/common;
+                
 	}	// end reduceToLowestTerms
 
   	/** Task: Computes the greatest common secondFraction of two integers.
@@ -204,6 +225,7 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 			result = integerTwo;
 		 else
 			result = greatestCommonDivisor(integerTwo, integerOne % integerTwo);
+                 //System.out.println("GCD Method:" + result);
 
 		 return result;
 	}	// end greatestCommonDivisor
@@ -253,7 +275,9 @@ public class Fraction implements FractionInterface, Comparable<Fraction>
 		result = firstOperand.add(secondOperand);
 		System.out.println("The sum of " + firstOperand	+
 				" and " +	secondOperand + " is \t\t" + result);
-
+                
+                System.out.println("\nReciprocal Test: " + secondOperand.getReciprocal());
+                
 		System.out.println();
 
 		// equality check
